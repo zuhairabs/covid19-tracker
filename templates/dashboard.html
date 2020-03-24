@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>COVID-19</title>
+	<meta charset="utf-8">
+	<script src="https://kit.fontawesome.com/b385f29ce4.js" crossorigin="anonymous"></script>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="/css/materialize.min.css"  media="screen,projection"/>
+	<link rel="stylesheet" type="text/css" href="/css/app.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body class="black">
+	<nav>
+		<div class="nav-wrapper teal">
+			<a href="#" class="brand-logo center">COVID - 19</a>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="row">
+			<div class="col s12 m6">
+				<h3 class="white-text center">Global Cases: {{ overAll['cases']}}</h3>
+				<div class="card-panel yellow darken-2 z-depth-3">
+					<span class="flow-text white-text center-align">
+						Infected : {{ overAll['cases'] - overAll['deaths'] - overAll['recovered'] }}
+					</span>
+				</div>
+				<div class="card-panel red z-depth-3">
+					<span class="flow-text white-text center-align">
+						Deaths : {{ overAll['deaths'] }}
+					</span>
+				</div>
+				<div class="card-panel green z-depth-3">
+					<span class="flow-text white-text center-align">
+						Recovered : {{ overAll['recovered'] }}
+					</span>
+				</div>
+				<div class="card-panel teal white-text z-depth-3">
+				<p  style="font-size: 18px">Some Important links:</p>
+				<p  style="font-size: 18px"><a class="lime-text text-accent-2" href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public/myth-busters">Myth Busters</a></p>
+				<p  style="font-size: 18px"><a class="lime-text text-accent-2" href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public">Advice for Public</a></p>
+				</div>
+			</div>
+			<div class="col s12 m6">
+				<h3 class="white-text center">Countries</h3>
+				<ul class="collapsible" style="overflow-y: scroll;height: 500px;border: none" id="scrollbar">
+					{% for country in countries %}
+					<li>
+					  <div class="collapsible-header teal white-text"  style="border-bottom: 0.5px black solid">{{ loop.index }}. {{ country['country']}}</div>
+					  <div class="collapsible-body teal darken-4 white-text"  style="border-bottom: 0.5px black solid">
+					  	<p>Infected : {{ country['cases'] - country['recovered'] - country['deaths']}}</p>
+					  	<p>Deaths : {{ country['deaths'] }}</p>
+					  	<p>Recovered : {{ country['recovered'] }}</p>
+					  </div>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		<div id="plots"></div>
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="/js/plotly-latest.min.js"></script>
+	<script src="/js/materialize.min.js"></script>
+	<script src="/js/app.js"></script>
+	<script type="text/javascript">
+		var trace1 = {
+			type: "scatter",
+			mode: "lines",
+			name: 'Deaths',
+			x: {{xd | safe}},
+		    y: {{yd | safe}},
+			line: {color: '#FC1303'}
+		}
+		var trace2 = {
+			type: "scatter",
+			mode: "lines",
+			name: 'Infected',
+			x: {{xi | safe}},
+		    y: {{yi | safe}},
+			line: {color: '#FFF200'}
+		}
+		var trace3 = {
+			type: "scatter",
+			mode: "lines",
+			name: 'Recovered',
+			x: {{xr | safe}},
+		    y: {{yr | safe}},
+			line: {color: '##00FF62'}
+		}
+		var data = [trace2,trace1,trace3]
+		var layout = { 
+		  title: 'Graphical Analysis',
+		  font: {size: 18,color: "white"},
+		  plot_bgcolor:"black",
+		  paper_bgcolor:"black"
+		};
+		var config = {responsive: true}
+		Plotly.newPlot('plots', data,layout,config);     
+    </script>
+</body>
+</html>
