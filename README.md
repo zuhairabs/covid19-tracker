@@ -2,4 +2,4 @@
 
 A Flask dashboard made to analyze the ongoing COVID-19 pandemic outbreak.
 
-Link : https://coronadashboardapp.herokuapp.com/
+Link : https://covidindiatracker.herokuapp.com/
